@@ -52,15 +52,15 @@
 <div class="grid">
     <div class="box">
         <label>Prepared By (Broker Name)</label>
-        <input type="text" placeholder="Enter Broker Name">
+        <input type="text" value="Alexis Cozzi">
     </div>
     <div class="box">
         <label>Quote / Policy Number</label>
-        <input type="text" placeholder="Enter Quote/Policy Number">
+        <input type="text" value="CFPQ01">
     </div>
     <div class="box">
         <label>Quote Status</label>
-        <input type="text" placeholder="e.g., New - Pending">
+        <input type="text" value="New - Pending">
     </div>
     <div class="box">
         <label>Applicant Name</label>
@@ -84,33 +84,33 @@
     <tbody id="coverage-tbody">
         <tr>
             <td><input type="text" value="Dwelling Coverage" style="font-weight: bold;"></td>
-            <td><input type="text" placeholder="$0.00"></td>
-            <td><input type="text" placeholder="$0.00"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
         </tr>
         <tr>
             <td><input type="text" value="Personal Property (Contents)" style="font-weight: bold;"></td>
-            <td><input type="text" placeholder="$0.00"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
             <td><input type="text" value="Included"></td>
         </tr>
         <tr>
             <td><input type="text" value="Fair Rental Value" style="font-weight: bold;"></td>
-            <td><input type="text" placeholder="$0.00"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
             <td><input type="text" value="Included"></td>
         </tr>
         <tr>
             <td><input type="text" value="Ordinance or Law Coverage" style="font-weight: bold;"></td>
-            <td><input type="text" placeholder="$0.00"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
             <td><input type="text" value="Included"></td>
         </tr>
         <tr>
             <td><input type="text" value="Debris Removal" style="font-weight: bold;"></td>
-            <td><input type="text" placeholder="$0.00"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
             <td><input type="text" value="Included"></td>
         </tr>
         <!-- Dynamic rows inject here -->
         <tr id="total-row" style="background:#f2f2f2; font-weight:bold;">
             <td>Total Combined Limit</td>
-            <td><input type="text" placeholder="$0.00" style="font-weight:bold;"></td>
+            <td><input type="text" placeholder="$0.00" style="font-weight:bold;" onblur="formatCurrency(this)"></td>
             <td>—</td>
         </tr>
     </tbody>
@@ -129,7 +129,7 @@
 
 <div class="premium-box">
     <strong>Estimated Total Annual Premium:</strong> 
-    <input type="text" placeholder="$0.00" style="font-weight:bold; font-size:20px; text-align:center; width:200px; color:#0054a6; display:inline-block;">
+    <input type="text" placeholder="$0.00" style="font-weight:bold; font-size:20px; text-align:center; width:200px; color:#0054a6; display:inline-block;" onblur="formatCurrency(this)">
 </div>
 
 <!-- Legal Disclosures Box -->
@@ -150,6 +150,23 @@
 </div>
 
 <script>
+    // Automatically format inputs to currency ($XX,XXX.XX) on blur
+    function formatCurrency(input) {
+        // Extract numbers and decimal point only
+        let value = input.value.replace(/[^0-9.]/g, '');
+        if (!value) return;
+
+        // Parse to float and format
+        let formattedValue = parseFloat(value).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+
+        input.value = formattedValue;
+    }
+
     function addCoverageRow() {
         const tbody = document.getElementById("coverage-tbody");
         const totalRow = document.getElementById("total-row");
@@ -157,8 +174,8 @@
         
         newRow.innerHTML = `
             <td><input type="text" placeholder="e.g., Other Structures" style="font-weight: bold;"></td>
-            <td><input type="text" placeholder="$0.00"></td>
-            <td><input type="text" placeholder="e.g., Included"></td>
+            <td><input type="text" placeholder="$0.00" onblur="formatCurrency(this)"></td>
+            <td><input type="text" placeholder="e.g., Included" onblur="formatCurrency(this)"></td>
         `;
         
         tbody.insertBefore(newRow, totalRow);
